@@ -61,11 +61,13 @@ export class CreateDataComponent {
 
 interface Something {
   name: string;
+  id: number;
 }
 
 interface SomethingElse {
   name: string;
   somethings: Something[];
+  id: number;
 }
 
 interface Token {

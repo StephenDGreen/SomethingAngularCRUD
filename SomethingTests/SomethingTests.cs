@@ -25,6 +25,17 @@ namespace SomethingTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Something_HasAnId()
+        {
+            var something1 = new Domain.Something();
+            int expected = 0;
+
+            int actual = something1.Id;
+
+            Assert.Equal(expected, actual);
+        }
         [Fact]
         public void SomethingFactory_Create_CreatesSomething()
         {

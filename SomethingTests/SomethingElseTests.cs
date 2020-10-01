@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Something.Application;
 using Something.Domain;
+using Something.Domain.Models;
 using Something.Persistence;
 using SomethingTests.Infrastructure.Factories;
 using System;
@@ -25,11 +26,23 @@ namespace SomethingTests
         }
 
         [Fact]
+        public void SomethingElse_HasAnId()
+        {
+            var name = "Fred Bloggs";
+            var something1 = Domain.SomethingElse.CreateNamedSomethingElse(name);
+            int expected = 0;
+
+            int actual = something1.Id;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void SomethingElse_HasAName()
         {
             var expected = "Fred Bloggs";
             var something1 = Domain.SomethingElse.CreateNamedSomethingElse(expected);
-            
+
             string actual = something1.Name;
 
             Assert.Equal(expected, actual);
