@@ -51,5 +51,13 @@ namespace Something.Persistence
             ctx.SaveChanges();
             return somethingElse;
         }
+
+        public void DeleteSomethingElseById(int id)
+        {
+            var somethingElse = ctx.SomethingElses.Include(s => s.Somethings).Where(r => r.Id == id).FirstOrDefault();
+            if (somethingElse == null) throw new InvalidOperationException("This SomethingElse does not exist");
+            ctx.Remove(somethingElse);
+            ctx.SaveChanges();
+        }
     }
 }

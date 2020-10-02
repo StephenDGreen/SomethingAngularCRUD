@@ -14,7 +14,7 @@ namespace Something.Persistence
         {
             modelBuilder.Entity<Domain.Models.SomethingElse>()
                 .HasMany(e => e.Somethings)
-                .WithOne();
+                .WithOne().OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

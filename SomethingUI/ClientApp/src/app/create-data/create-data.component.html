@@ -15,9 +15,9 @@
     <tr *ngFor="let somethingelse of somethingelses">
       <td>{{ somethingelse.name }}</td>
       <td>
-        <!--<button class="btn btn-primary" (click)="deleteSomethingElse(somethingelse.id)">
+        <button class="btn btn-primary" (click)="deleteSomethingElse(somethingelse.id)">
           Delete
-        </button>-->
+        </button>
       </td>
       <td>
         <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="somethingelse.somethings" width="50%">

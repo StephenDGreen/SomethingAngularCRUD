@@ -17,7 +17,7 @@ namespace SomethingTests
     [ExcludeFromCodeCoverage]
     public class SomethingElseTests
     {
-        private readonly Domain.SomethingElse somethingElse = Domain.SomethingElse.CreateNamedSomethingElse("Fred Bloggs") ;
+        private readonly Domain.SomethingElse somethingElse = Domain.SomethingElse.CreateNamedSomethingElse("Fred Bloggs");
         private readonly Domain.Something something = new Domain.Something() { Name = "Alice Bloggs" };
 
         public SomethingElseTests()
@@ -296,10 +296,10 @@ namespace SomethingTests
         }
 
         [Fact]
-        public void SomethingElsePersistence__GetSomethingElseById__ThrowsInvalidOperationExceptionGivenIdOfNonexistentSomethingElse()
+        public void SomethingElsePersistence__UpdateSomethingElseByIdAddSomething__ThrowsInvalidOperationExceptionGivenIdOfNonexistentSomethingElse()
         {
             int id = 5;
-            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__GetSomethingElseById__ThrowsInvalidOperationExceptionGivenIdOfNonexistentSomethingElse)))
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdAddSomething__ThrowsInvalidOperationExceptionGivenIdOfNonexistentSomethingElse)))
             {
                 var persistence = new SomethingElsePersistence(ctx);
                 persistence.SaveSomethingElse(somethingElse);
@@ -308,7 +308,7 @@ namespace SomethingTests
             Mock<ISomethingFactory> mockSomethingFactory = new Mock<ISomethingFactory>();
             mockSomethingFactory.Setup(x => x.Create(something.Name)).Returns(something);
 
-            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__GetSomethingElseById__ThrowsInvalidOperationExceptionGivenIdOfNonexistentSomethingElse)))
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdAddSomething__ThrowsInvalidOperationExceptionGivenIdOfNonexistentSomethingElse)))
             {
                 var persistence = new SomethingElsePersistence(ctx);
                 Domain.Something something1 = mockSomethingFactory.Object.Create(something.Name);
@@ -316,10 +316,10 @@ namespace SomethingTests
             };
         }
         [Fact]
-        public void SomethingElsePersistence__GetSomethingElseById__ThrowsInvalidOperationExceptionGivenNonexistentSomething()
+        public void SomethingElsePersistence__UpdateSomethingElseByIdAddSomething__ThrowsInvalidOperationExceptionGivenNonexistentSomething()
         {
             int id = 5;
-            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__GetSomethingElseById__ThrowsInvalidOperationExceptionGivenNonexistentSomething)))
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdAddSomething__ThrowsInvalidOperationExceptionGivenNonexistentSomething)))
             {
                 var persistence = new SomethingElsePersistence(ctx);
                 persistence.SaveSomethingElse(somethingElse);
@@ -328,7 +328,7 @@ namespace SomethingTests
             Mock<ISomethingFactory> mockSomethingFactory = new Mock<ISomethingFactory>();
             mockSomethingFactory.Setup(x => x.Create(something.Name)).Returns((Domain.Something)null);
 
-            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__GetSomethingElseById__ThrowsInvalidOperationExceptionGivenNonexistentSomething)))
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdAddSomething__ThrowsInvalidOperationExceptionGivenNonexistentSomething)))
             {
                 var persistence = new SomethingElsePersistence(ctx);
                 Domain.Something something1 = mockSomethingFactory.Object.Create(something.Name);
@@ -354,7 +354,7 @@ namespace SomethingTests
             mockPersistence.Verify(x => x.UpdateSomethingElseByIdAddSomething(id, something));
         }
 
-        
+
         [Fact]
         public void SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__UpdatesSomethingElseByIdFromDatabaseWithSomethingDeleted()
         {
@@ -437,5 +437,73 @@ namespace SomethingTests
             mockPersistence.Verify(x => x.UpdateSomethingElseByIdDeleteSomethingById(else_id, something_id));
         }
 
+        [Fact]
+        public void SomethingElsePersistence__DeleteSomethingElseById__DeleteSomethingElseFromDatabaseById()
+        {
+            int id = 1;
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__DeleteSomethingElseById__DeleteSomethingElseFromDatabaseById)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                persistence.SaveSomethingElse(somethingElse);
+            };
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__DeleteSomethingElseById__DeleteSomethingElseFromDatabaseById)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                persistence.DeleteSomethingElseById(id);
+            };
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__DeleteSomethingElseById__DeleteSomethingElseFromDatabaseById)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+
+                var savedSomethingElses = persistence.GetSomethingElseIncludingSomethingList().Where(f => f.Id == id).ToList();
+
+                int expected = 0;
+                int actual = savedSomethingElses.Count;
+                Assert.Equal(expected, actual);
+            };
+        }
+
+
+        [Fact]
+        public void SomethingElseCreateInteractor_DeleteSomethingElse_DeletesSomethingElseFromPersistence()
+        {
+            var name = "Fred Bloggs";
+            var somethingElse1 = Domain.SomethingElse.CreateNamedSomethingElse(name);
+            Mock<ISomethingFactory> mockSomethingFactory = new Mock<ISomethingFactory>();
+            Mock<ISomethingElseFactory> mockSomethingElseFactory = new Mock<ISomethingElseFactory>();
+            mockSomethingElseFactory.Setup(x => x.Create(somethingElse1.Name)).Returns(somethingElse1);
+            Mock<ISomethingElsePersistence> mockPersistence = new Mock<ISomethingElsePersistence>();
+            SomethingElseDeleteInteractor somethingElseInteractor = new SomethingElseDeleteInteractor(mockSomethingFactory.Object, mockSomethingElseFactory.Object, mockPersistence.Object);
+
+            somethingElseInteractor.DeleteSomethingElse(somethingElse1.Id);
+
+            mockPersistence.Verify(x => x.DeleteSomethingElseById(somethingElse1.Id));
+        }
+
+        [Fact]
+        public void SomethingElsePersistence_DeleteSomethingElseById_DeletionCascades()
+        {
+            int id = 1;
+            List<int> childIds;
+            var something1 = new Domain.Something() { Name = "Bob" };
+            Domain.SomethingElse somethingElse1 = Domain.SomethingElse.CreateNamedSomethingElse("Fred Bloggs");
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence_DeleteSomethingElseById_DeletionCascades)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                persistence.SaveSomethingElse(somethingElse1);
+                var updatedSomethingElse = persistence.UpdateSomethingElseByIdAddSomething(somethingElse1.Id, something1);
+                var somethingElse = ctx.SomethingElses.Include(s => s.Somethings).Where(r => r.Id == id).FirstOrDefault();
+                childIds = somethingElse.Somethings.Select(c => c.Id).ToList();
+                ctx.Remove(somethingElse);
+                ctx.SaveChanges();
+            }
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence_DeleteSomethingElseById_DeletionCascades)))
+            {
+                Assert.Empty(ctx.Somethings.Where(c => childIds.Contains(c.Id)));
+            };
+        }
     }
 }

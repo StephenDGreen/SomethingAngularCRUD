@@ -90,6 +90,25 @@ export class CreateDataComponent {
       }, error2 => console.error(error2));
     }, error1 => console.error(error1));
   }
+  async deleteSomethingElse(elseid: number) {
+    await this.http.get<Token>(this.baseUrl + 'home/authenticate').subscribe(result => {
+      this.token = result;
+      this.header = new HttpHeaders()
+        .set(
+          "Authorization",
+          `Bearer ${this.token.access_token}`
+        )
+        .set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        );
+      this.http.delete<any>(this.baseUrl + 'api/thingselse/' + elseid, { headers: this.header }).subscribe(result => {
+        this.http.get<SomethingElse[]>(this.baseUrl + 'api/thingselse', { headers: this.header }).subscribe(result => {
+          this.somethingelses = result;
+        }, error3 => console.error(error3));
+      }, error2 => console.error(error2));
+    }, error1 => console.error(error1));
+  }
   makeRandom(lengthOfCode: number, possible: string) {
     let text = "";
     for (let i = 0; i < lengthOfCode; i++) {

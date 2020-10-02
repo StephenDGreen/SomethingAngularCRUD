@@ -12,12 +12,14 @@ namespace SomethingUI.Controllers
         private readonly ISomethingElseCreateInteractor createElseInteractor;
         private readonly ISomethingElseReadInteractor readElseInteractor;
         private readonly ISomethingElseUpdateInteractor updateInteractor;
+        private readonly ISomethingElseDeleteInteractor deleteInteractor;
 
-        public ElseController(ISomethingElseCreateInteractor createElseInteractor, ISomethingElseReadInteractor readElseInteractor, ISomethingElseUpdateInteractor updateInteractor)
+        public ElseController(ISomethingElseCreateInteractor createElseInteractor, ISomethingElseReadInteractor readElseInteractor, ISomethingElseUpdateInteractor updateInteractor, ISomethingElseDeleteInteractor deleteInteractor)
         {
             this.createElseInteractor = createElseInteractor;
             this.readElseInteractor = readElseInteractor;
             this.updateInteractor = updateInteractor;
+            this.deleteInteractor = deleteInteractor;
         }
         [HttpPost]
         [Route("api/thingselse")]
@@ -47,6 +49,16 @@ namespace SomethingUI.Controllers
                 return GetAllSomethingElseIncludeSomething();
 
             updateInteractor.UpdateSomethingElseDeleteSomething(else_id, something_id);
+            return GetAllSomethingElseIncludeSomething();
+        }
+        [HttpDelete]
+        [Route("api/thingselse/{else_id}")]
+        public ActionResult Delete(int else_id)
+        {
+            if (else_id < 1)
+                return GetAllSomethingElseIncludeSomething();
+
+            deleteInteractor.DeleteSomethingElse(else_id);
             return GetAllSomethingElseIncludeSomething();
         }
         [HttpGet]

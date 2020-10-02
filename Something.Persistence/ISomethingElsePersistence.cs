@@ -5,6 +5,7 @@ namespace Something.Persistence
 {
     public interface ISomethingElsePersistence
     {
+        void DeleteSomethingElseById(int id);
         List<SomethingElse> GetSomethingElseIncludingSomethingList();
         List<SomethingElse> GetSomethingElseList();
         void SaveSomethingElse(SomethingElse somethingElse);

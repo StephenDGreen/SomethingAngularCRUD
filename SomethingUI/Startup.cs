@@ -61,6 +61,7 @@ namespace SomethingUI
             services.AddScoped<ISomethingElseCreateInteractor, SomethingElseCreateInteractor>();
             services.AddScoped<ISomethingElseReadInteractor, SomethingElseReadInteractor>();
             services.AddScoped<ISomethingElseUpdateInteractor, SomethingElseUpdateInteractor>();
+            services.AddScoped<ISomethingElseDeleteInteractor, SomethingElseDeleteInteractor>();
             services.AddScoped<ISomethingElsePersistence, SomethingElsePersistence>();
             services.AddSingleton<ISomethingUserManager, SomethingUserManager>(); 
             services.AddControllersWithViews();
