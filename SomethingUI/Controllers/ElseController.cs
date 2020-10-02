@@ -39,6 +39,16 @@ namespace SomethingUI.Controllers
             updateInteractor.UpdateSomethingElseAddSomething(id, othername);
             return GetAllSomethingElseIncludeSomething();
         }
+        [HttpDelete]
+        [Route("api/thingselse/{else_id}/{something_id}")]
+        public ActionResult Delete(int else_id, int something_id)
+        {
+            if (else_id < 1 || something_id < 1)
+                return GetAllSomethingElseIncludeSomething();
+
+            updateInteractor.UpdateSomethingElseDeleteSomething(else_id, something_id);
+            return GetAllSomethingElseIncludeSomething();
+        }
         [HttpGet]
         [Route("api/thingselse")]
         public ActionResult GetElseList()

@@ -9,5 +9,6 @@ namespace Something.Persistence
         List<SomethingElse> GetSomethingElseList();
         void SaveSomethingElse(SomethingElse somethingElse);
         SomethingElse UpdateSomethingElseByIdAddSomething(int id, Domain.Models.Something something);
+        SomethingElse UpdateSomethingElseByIdDeleteSomethingById(int else_id, int something_id);
     }
 }

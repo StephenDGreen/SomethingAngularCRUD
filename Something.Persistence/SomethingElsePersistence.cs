@@ -40,5 +40,16 @@ namespace Something.Persistence
             ctx.SaveChanges();
             return somethingElse;
         }
+
+        public Domain.Models.SomethingElse UpdateSomethingElseByIdDeleteSomethingById(int else_id, int something_id)
+        {
+            var somethingElse = ctx.SomethingElses.Include(s => s.Somethings).Where(r => r.Id == else_id).FirstOrDefault();
+            if (somethingElse == null) throw new InvalidOperationException("This SomethingElse does not exist");
+            var something = somethingElse.Somethings.Where(s => s.Id == something_id).FirstOrDefault();
+            if (something == null) throw new InvalidOperationException("This Something does not exist");
+            ctx.Somethings.Remove(something);
+            ctx.SaveChanges();
+            return somethingElse;
+        }
     }
 }

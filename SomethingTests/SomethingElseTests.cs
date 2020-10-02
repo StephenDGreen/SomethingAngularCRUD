@@ -353,5 +353,89 @@ namespace SomethingTests
 
             mockPersistence.Verify(x => x.UpdateSomethingElseByIdAddSomething(id, something));
         }
+
+        
+        [Fact]
+        public void SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__UpdatesSomethingElseByIdFromDatabaseWithSomethingDeleted()
+        {
+            int id = 1;
+            int something_id = 1;
+            var something1 = new Domain.Something() { Name = "Bob" };
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__UpdatesSomethingElseByIdFromDatabaseWithSomethingDeleted)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                persistence.SaveSomethingElse(somethingElse);
+            };
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__UpdatesSomethingElseByIdFromDatabaseWithSomethingDeleted)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                var updatedSomethingElse = persistence.UpdateSomethingElseByIdDeleteSomethingById(id, something_id);
+                Assert.Equal(somethingElse.Name, updatedSomethingElse.Name);
+                Assert.Equal(somethingElse.Somethings.Count - 1, updatedSomethingElse.Somethings.Count);
+            };
+        }
+
+        [Fact]
+        public void SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__ThrowsInvalidOperationExceptionGivenNonexistentSomethingElse()
+        {
+            int id = 5;
+            int id2 = 1;
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__ThrowsInvalidOperationExceptionGivenNonexistentSomethingElse)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                persistence.SaveSomethingElse(somethingElse);
+            };
+
+            Mock<ISomethingFactory> mockSomethingFactory = new Mock<ISomethingFactory>();
+            mockSomethingFactory.Setup(x => x.Create(something.Name)).Returns((Domain.Something)null);
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__ThrowsInvalidOperationExceptionGivenNonexistentSomethingElse)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                Domain.Something something1 = mockSomethingFactory.Object.Create(something.Name);
+                var exception = Assert.Throws<InvalidOperationException>(() => persistence.UpdateSomethingElseByIdDeleteSomethingById(id, id2));
+            };
+        }
+
+        [Fact]
+        public void SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__ThrowsInvalidOperationExceptionGivenNonexistentSomething()
+        {
+            int id = 1;
+            int id2 = 5;
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__ThrowsInvalidOperationExceptionGivenNonexistentSomething)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                persistence.SaveSomethingElse(somethingElse);
+            };
+
+            Mock<ISomethingFactory> mockSomethingFactory = new Mock<ISomethingFactory>();
+            mockSomethingFactory.Setup(x => x.Create(something.Name)).Returns((Domain.Something)null);
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(SomethingElsePersistence__UpdateSomethingElseByIdDeleteSomethingById__ThrowsInvalidOperationExceptionGivenNonexistentSomething)))
+            {
+                var persistence = new SomethingElsePersistence(ctx);
+                Domain.Something something1 = mockSomethingFactory.Object.Create(something.Name);
+                var exception = Assert.Throws<InvalidOperationException>(() => persistence.UpdateSomethingElseByIdDeleteSomethingById(id, id2));
+            };
+        }
+        [Fact]
+        public void SomethingElseUpdateInteractor_UpdateSomethingElseDeleteSomething_PersistsSomethingElseWithSomethingDeleted()
+        {
+            var name = "Fred Bloggs";
+            var somethingElse1 = Domain.SomethingElse.CreateNamedSomethingElse(name);
+            Mock<ISomethingFactory> mockSomethingFactory = new Mock<ISomethingFactory>();
+            mockSomethingFactory.Setup(x => x.Create(something.Name)).Returns(something);
+            Mock<ISomethingElseFactory> mockSomethingElseFactory = new Mock<ISomethingElseFactory>();
+            mockSomethingElseFactory.Setup(x => x.Create(somethingElse1.Name)).Returns(somethingElse1);
+            Mock<ISomethingElsePersistence> mockPersistence = new Mock<ISomethingElsePersistence>();
+            SomethingElseUpdateInteractor somethingElseInteractor = new SomethingElseUpdateInteractor(mockSomethingFactory.Object, mockSomethingElseFactory.Object, mockPersistence.Object);
+            int else_id = 1;
+            int something_id = 1;
+            somethingElseInteractor.UpdateSomethingElseDeleteSomething(else_id, something_id);
+
+            mockPersistence.Verify(x => x.UpdateSomethingElseByIdDeleteSomethingById(else_id, something_id));
+        }
+
     }
 }

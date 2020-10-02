@@ -24,5 +24,10 @@ namespace Something.Application
             var something = somethingFactory.Create(name);
             return persistence.UpdateSomethingElseByIdAddSomething(id, something);
         }
+
+        public Domain.Models.SomethingElse UpdateSomethingElseDeleteSomething(int else_id, int something_id)
+        {
+            return persistence.UpdateSomethingElseByIdDeleteSomethingById(else_id, something_id);
+        }
     }
 }
