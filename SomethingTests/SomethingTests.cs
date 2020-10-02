@@ -36,6 +36,18 @@ namespace SomethingTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Something_SetsId()
+        {
+            var something1 = new Domain.Something();
+            int expected = 1;
+
+            something1.Id = expected;
+            int actual = something1.Id;
+
+            Assert.Equal(expected, actual);
+        }
         [Fact]
         public void SomethingFactory_Create_CreatesSomething()
         {
@@ -73,6 +85,22 @@ namespace SomethingTests
             };
         }
 
+        [Fact]
+        public void DbContextFactory_CreateAppDbContext_SavesSomethingToDatabaseAndRetrievesItSettingItsId()
+        {
+            int expected = 1;
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(DbContextFactory_CreateAppDbContext_SavesSomethingToDatabaseAndRetrievesItSettingItsId)))
+            {
+                ctx.Somethings.Add(something);
+                ctx.SaveChanges();
+            };
+
+            using (var ctx = new DbContextFactory().CreateAppDbContext(nameof(DbContextFactory_CreateAppDbContext_SavesSomethingToDatabaseAndRetrievesItSettingItsId)))
+            {
+                var savedSomething = ctx.Somethings.Single();
+                Assert.Equal(expected, savedSomething.Id);
+            };
+        }
         [Fact]
         public void SomethingPersistence__SaveSomething__SavesSomethingToDatabase()
         {
@@ -145,16 +173,6 @@ namespace SomethingTests
             
             Assert.Equal(somethingList.Count, somethingList1.Count);
             Assert.Equal(somethingList[somethingList.Count - 1].Name, somethingList1[somethingList1.Count - 1].Name);
-        }
-
-        [Fact]
-        public void UserManager_GetUserPrinciple_ReturnsUserPrinciple()
-        {
-            var userManager = new SomethingUserManager();
-
-            var actual = userManager.GetUserPrinciple();
-
-            Assert.IsType<System.Security.Claims.ClaimsPrincipal>(actual);
         }
     }
 }

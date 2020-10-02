@@ -50,6 +50,27 @@ export class CreateDataComponent {
       }, error2 => console.error(error2));
     }, error1 => console.error(error1));
   }
+  async addSomething(id: number) {
+    await this.http.get<Token>(this.baseUrl + 'home/authenticate').subscribe(result => {
+      this.token = result;
+      this.header = new HttpHeaders()
+        .set(
+          "Authorization",
+          `Bearer ${this.token.access_token}`
+        )
+        .set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        );
+      let possible = "abcdefghijklmnoprstuvwy";
+      const lengthOfCode = 10;
+      let othername = this.makeRandom(lengthOfCode, possible);
+      let body = `othername=${othername}`;
+      this.http.put<any>(this.baseUrl + 'api/thingselse/' + id, body, { headers: this.header }).subscribe(result => {
+        this.somethingelses = result;
+      }, error2 => console.error(error2));
+    }, error1 => console.error(error1));
+  }
   makeRandom(lengthOfCode: number, possible: string) {
     let text = "";
     for (let i = 0; i < lengthOfCode; i++) {

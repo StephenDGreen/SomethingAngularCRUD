@@ -17,7 +17,7 @@ namespace Something.Domain.Models
         public string Name { get; private set; }
 
         public List<Something> Somethings { get; private set; }
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         public static SomethingElse CreateNamedSomethingElse(string name)
         {

@@ -60,6 +60,7 @@ namespace SomethingUI
             services.AddSingleton<ISomethingElseFactory, SomethingElseFactory>();
             services.AddScoped<ISomethingElseCreateInteractor, SomethingElseCreateInteractor>();
             services.AddScoped<ISomethingElseReadInteractor, SomethingElseReadInteractor>();
+            services.AddScoped<ISomethingElseUpdateInteractor, SomethingElseUpdateInteractor>();
             services.AddScoped<ISomethingElsePersistence, SomethingElsePersistence>();
             services.AddSingleton<ISomethingUserManager, SomethingUserManager>(); 
             services.AddControllersWithViews();

@@ -8,5 +8,6 @@ namespace Something.Persistence
         List<SomethingElse> GetSomethingElseIncludingSomethingList();
         List<SomethingElse> GetSomethingElseList();
         void SaveSomethingElse(SomethingElse somethingElse);
+        SomethingElse UpdateSomethingElseByIdAddSomething(int id, Domain.Models.Something something);
     }
 }

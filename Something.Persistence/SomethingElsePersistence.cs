@@ -30,5 +30,15 @@ namespace Something.Persistence
         {
             return ctx.SomethingElses.Include(s => s.Somethings).ToList();
         }
+
+        public Domain.Models.SomethingElse UpdateSomethingElseByIdAddSomething(int id, Domain.Models.Something something)
+        {
+            var somethingElse = ctx.SomethingElses.Include(s => s.Somethings).Where(r => r.Id == id).FirstOrDefault();
+            if (somethingElse == null) throw new InvalidOperationException("SomethingElse does not exist");
+            somethingElse.Somethings.Add(something);
+            ctx.Update(somethingElse);
+            ctx.SaveChanges();
+            return somethingElse;
+        }
     }
 }

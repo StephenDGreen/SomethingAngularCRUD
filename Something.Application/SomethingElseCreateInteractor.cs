@@ -7,25 +7,25 @@ namespace Something.Application
     public class SomethingElseCreateInteractor : ISomethingElseCreateInteractor
     {
         private readonly ISomethingFactory somethingFactory;
-        private ISomethingElseFactory factory;
+        private ISomethingElseFactory somethingElseFactory;
         private ISomethingElsePersistence persistence;
 
-        public SomethingElseCreateInteractor(ISomethingFactory somethingFactory, ISomethingElseFactory factory, ISomethingElsePersistence persistence)
+        public SomethingElseCreateInteractor(ISomethingFactory somethingFactory, ISomethingElseFactory somethingElseFactory, ISomethingElsePersistence persistence)
         {
             this.somethingFactory = somethingFactory;
-            this.factory = factory;
+            this.somethingElseFactory = somethingElseFactory;
             this.persistence = persistence;
         }
 
         public void CreateSomethingElse(string name)
         {
-            var somethingElse = factory.Create(name);
+            var somethingElse = somethingElseFactory.Create(name);
             persistence.SaveSomethingElse(somethingElse);
         }
 
         public void CreateSomethingElse(string name, string[] othernames)
         {
-            var somethingElse = factory.Create(name);
+            var somethingElse = somethingElseFactory.Create(name);
             foreach (var nm in othernames)
             {
                 var something = somethingFactory.Create(nm);
