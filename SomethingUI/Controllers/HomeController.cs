@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Something.Application;
 using Something.Security;
 
 namespace Something.API.Controllers

@@ -1,8 +1,6 @@
 ﻿using Something.Domain.Models;
 using Something.Persistence;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Something.Application
 {

@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Something.Application;
 using Something.Domain;
-using Something.Domain.Models;
 using Something.Persistence;
 using SomethingTests.Infrastructure.Factories;
 using System;

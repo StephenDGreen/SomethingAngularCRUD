@@ -1,14 +1,6 @@
-﻿using Moq;
-using Something.Application;
-using Something.Domain;
-using Something.Persistence;
-using Something.Security;
-using SomethingTests.Infrastructure.Factories;
-using System.Collections.Generic;
+﻿using Something.Security;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using Xunit;
-using Domain = Something.Domain.Models;
 
 
 namespace SomethingTests

@@ -2,7 +2,6 @@ using Moq;
 using Something.Application;
 using Something.Domain;
 using Something.Persistence;
-using Something.Security;
 using SomethingTests.Infrastructure.Factories;
 using System.Collections.Generic;
 using System.Linq;

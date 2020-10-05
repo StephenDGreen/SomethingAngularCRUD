@@ -1,6 +1,5 @@
 ﻿using Something.Domain;
 using Something.Persistence;
-using System;
 
 namespace Something.Application
 {

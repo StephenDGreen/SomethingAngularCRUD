@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Something.Application;
-using Something.Security;
 
 namespace SomethingUI.Controllers
 {
@@ -9,15 +8,15 @@ namespace SomethingUI.Controllers
     [ApiController]
     public class ElseController : ControllerBase
     {
-        private readonly ISomethingElseCreateInteractor createElseInteractor;
-        private readonly ISomethingElseReadInteractor readElseInteractor;
+        private readonly ISomethingElseCreateInteractor createInteractor;
+        private readonly ISomethingElseReadInteractor readInteractor;
         private readonly ISomethingElseUpdateInteractor updateInteractor;
         private readonly ISomethingElseDeleteInteractor deleteInteractor;
 
-        public ElseController(ISomethingElseCreateInteractor createElseInteractor, ISomethingElseReadInteractor readElseInteractor, ISomethingElseUpdateInteractor updateInteractor, ISomethingElseDeleteInteractor deleteInteractor)
+        public ElseController(ISomethingElseCreateInteractor createInteractor, ISomethingElseReadInteractor readInteractor, ISomethingElseUpdateInteractor updateInteractor, ISomethingElseDeleteInteractor deleteInteractor)
         {
-            this.createElseInteractor = createElseInteractor;
-            this.readElseInteractor = readElseInteractor;
+            this.createInteractor = createInteractor;
+            this.readInteractor = readInteractor;
             this.updateInteractor = updateInteractor;
             this.deleteInteractor = deleteInteractor;
         }
@@ -28,7 +27,7 @@ namespace SomethingUI.Controllers
             if (name.Length < 1)
                 return GetAllSomethingElseIncludeSomething();
 
-            createElseInteractor.CreateSomethingElse(name, othername);
+            createInteractor.CreateSomethingElse(name, othername);
             return GetAllSomethingElseIncludeSomething();
         }
         [HttpPut]
@@ -69,7 +68,7 @@ namespace SomethingUI.Controllers
         }
         private ActionResult GetAllSomethingElseIncludeSomething()
         {
-            var result = readElseInteractor.GetSomethingElseIncludingSomethingsList();
+            var result = readInteractor.GetSomethingElseIncludingSomethingsList();
             return Ok(result);
         }
     }

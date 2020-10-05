@@ -1,5 +1,4 @@
-﻿
-namespace Something.Domain
+﻿namespace Something.Domain
 {
     public interface ISomethingFactory
     {
